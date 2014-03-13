@@ -39,7 +39,7 @@ class Gotasku::Parser < SGF::Parser
 
   def validate(sgf)
 		regs = {black: /AB/, white: /AW/}
-		[:black].each do |color|
+		regs.keys.each do |color|
 			index = 0
 
 			# check next part of the string
@@ -70,22 +70,17 @@ class Gotasku::Parser < SGF::Parser
 	def validate_part(sgf, color)
 		# changes bad sgf: AB[xx]AB[xx]AW[xx] => AB[xx][xx]AW[xx]
 		temp = '<(" <) <( " )> (> ")>'
+		
+		regs = {black: [/\[[^W]+\]AB\[..\]/, /(\[..\])AB/],
+						white: [/\[[^B]+\]AW/,       /(\[..\])AW/]}
 
-		ab_scan = sgf.scan(/\[[^W]+\]AB\[..\]/)
-		sgf.gsub!(/\[[^W]+\]AB\[..\]/, temp)
+		scan = sgf.scan(regs[color].first)
+		sgf.gsub!(regs[color].first, temp)
 	
-    aw_scan = sgf.scan(/\[[^B]+\]AW/)
-		sgf.gsub!(/\[[^B]+\]AW/, temp.reverse)
-	
-		ab_scan.each do |slice| 
-			slice.gsub!(/(\[..\])AB/) { "#{$1}" }
+		scan.each do |slice| 
+			slice.gsub!(regs[color].last) { "#{$1}" }
 			sgf.sub!(temp, slice)
 		end
-
-		aw_scan.each do |slice| 
-			slice.gsub!(/(\[..\])AW/) { "#{$1}" }
-			sgf.sub!(temp.reverse, slice)
-		end	
 
 		sgf
 	end
