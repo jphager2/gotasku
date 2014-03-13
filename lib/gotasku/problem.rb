@@ -17,7 +17,7 @@ class Gotasku::Problem
 	end
 
 	def tree 
-		@tree ||= ::SGF::Parser.new.parse(sgf)
+		@tree ||= ::Gotasku::Parser.new.parse(sgf)
 	end
 
 	def save
