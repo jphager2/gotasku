@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require_relative '../lib/gotasku'
 
-class GotaskuTest < MiniTest::Unit::TestCase
+class GotaskuParserTest < MiniTest::Unit::TestCase
 	def setup
 		@parser = SGF::Parser.new
 		@gparser = Gotasku::Parser.new
@@ -74,6 +74,7 @@ class GotaskuTest < MiniTest::Unit::TestCase
 
 		validated_sgf = @gparser.validate(incorrect_sgf)
 	
+		assert_match /AW/, validated_sgf
 		refute_match /AW\[..\]AW/, validated_sgf
 	end
 

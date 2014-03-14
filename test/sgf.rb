@@ -1,10 +1,13 @@
 require 'minitest/autorun'
 require_relative '../lib/gotasku'
 
-class GotaskuTest < MiniTest::Unit::TestCase
+class GotaskuProblemTest < MiniTest::Unit::TestCase
+	def setup
+		@problem = Gotasku::Problem.new(17625)
+	end
 
 	def test_gets_id
-		assert_equal 17625, Gotasku::Problem.new(17625).id
+		assert_equal 17625, @problem.id
 	end
 
 	def test_gets_sgf
@@ -24,7 +27,7 @@ class GotaskuTest < MiniTest::Unit::TestCase
 (;B[sb];W[rc]TR[sd]TR[sa])
 (;B[rc];W[sb]TR[sd]TR[pa]))'.gsub(/\r?\n/, '')
 
-		assert_equal sgf, Gotasku::Problem.new(17625).sgf
+		assert_equal sgf, @problem.sgf
 	end
 
 	def test_gets_another_sgf
@@ -62,14 +65,14 @@ C[Black has had another chance to repair his defect.
 	end
 
 	def test_gets_tree_for_sgf
-		assert_kind_of ::SGF::Tree, Gotasku::Problem.new(17625).tree 
+		assert_kind_of ::SGF::Tree, @problem.tree 
 	end
 
 	def test_saves_problem
 		file = Dir.pwd + '/17625.sgf'
 
 		File.delete(file) if File.exist?(file)
-		Gotasku::Problem.new(17625).save
+		@problem.save
 
 		assert_includes Dir.glob(Dir.pwd + '/*.sgf'), file
 	end
