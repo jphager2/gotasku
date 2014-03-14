@@ -4,8 +4,9 @@ class Gotasku::Problem
 
 	attr_reader :id
 
-	def initialize(id)
-		@id = id
+	def initialize(options)
+		@id  = options[:id]
+		@sgf = options[:sgf]
 	end
 
 	def sgf 
