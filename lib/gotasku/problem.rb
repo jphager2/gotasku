@@ -10,13 +10,19 @@ class Gotasku::Problem
 		@sgf = options[:sgf]
 	end
 
-	# access sgf or strip sgf from goproblems.com 
-	def sgf 
-		@sgf ||= begin
-		  #get sgf from go problems  
-							 doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
-							 doc.css("div#player-container").text.gsub(/\r?\n/, '')
-             end
+	# access sgf or strip problem sgf from goproblems.com 
+	def sgf
+		@sgf ||= data[:sgf]
+	end
+
+	# strip problem difficulty from goproblems.com
+	def difficulty
+		data[:difficulty]
+	end
+
+	# strip problem type from goproblems.com
+	def type 
+		data[:type]
 	end
 
 	# access or get the tree from the Parser
@@ -66,4 +72,18 @@ class Gotasku::Problem
 			# the problem
 		end
 	end
+
+	private
+		def data 
+			@data ||= begin
+				#get sgf from go problems  
+				doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
+				sgf = doc.css("div#player-container").text.gsub(/\r?\n/, '')
+				difficulty = Gotasku::DifficultyString.new(
+					doc.css("div.difficulty a").text).convert
+				type = doc.css("div.prob_genre").text
+
+				{sgf: sgf, difficulty: difficulty, type: type}
+			end
+		end
 end
