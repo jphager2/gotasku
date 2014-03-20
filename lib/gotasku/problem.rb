@@ -4,11 +4,13 @@ class Gotasku::Problem
 
 	attr_reader :id
 
+	# initializes with a hash of options
 	def initialize(options)
 		@id  = options[:id]
 		@sgf = options[:sgf]
 	end
 
+	# access sgf or strip sgf from goproblems.com 
 	def sgf 
 		@sgf ||= begin
 		  #get sgf from go problems  
@@ -17,14 +19,18 @@ class Gotasku::Problem
              end
 	end
 
+	# access or get the tree from the Parser
 	def tree 
-		@tree ||= ::Gotasku::Parser.new.parse(sgf)
+		@tree ||= Gotasku::Parser.new.parse(sgf)
 	end
 
+	# saves the sgf 
 	def save
 		tree.save("#{id}.sgf")
 	end
 
+	# this method is not finished
+	# uploads sgf to goproblems.com 
 	def upload
 		# don't upload a problem that came from goproblems
 		unless @id
@@ -55,6 +61,9 @@ class Gotasku::Problem
 
 				@submit = f.submit
 			end
+
+			# after submit, goes to flash app to confirm and complete 
+			# the problem
 		end
 	end
 end

@@ -4,6 +4,8 @@ class Gotasku::Session
 
 	attr_reader :account
 	
+	# uses mechanize to login to goproblems.com and makes makes this the
+	# current session
 	def initialize(user)
 		a = Mechanize.new
 		a.get('http://www.goproblems.com/') do |page|
@@ -26,6 +28,7 @@ class Gotasku::Session
 		@@current = @account
 	end
 
+	# accesses current session
 	def self.current 
 		@@current
 	end

@@ -1,17 +1,16 @@
 class Gotasku::Parser < SGF::Parser
 
+	# validates and parses sgf string
 	def parse(sgf)
     super(validate(sgf))	
 	end
 
-	# this is designed to only work for sgf text that has one set of
-	# AB and one set of AW, won't work if there are any other AB or AW
-	# in the middle of the tree
+	# validates sgf string for common goproblems.com issues
 	def validate(sgf)
 	  validate_for(validate_for(sgf, :AB), :AW)
 	end
 
-	# danger is if there is "AB" in a comment, e.g. "It's ABOUT time!"
+	# validates for a property (AB or AW)
 	def validate_for(sgf, property)
 		regs = {AB: /AB/, AW: /AW/}
 
@@ -26,5 +25,4 @@ class Gotasku::Parser < SGF::Parser
 
 		sgf
 	end
-
 end
