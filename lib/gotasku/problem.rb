@@ -8,6 +8,10 @@ class Gotasku::Problem
 	def initialize(options)
 		@id  = options[:id]
 		@sgf = options[:sgf]
+
+		if @sgf 
+			@data = options[:data] || {}
+		end
 	end
 
 	# access sgf or strip problem sgf from goproblems.com 
