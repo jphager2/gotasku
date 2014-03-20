@@ -25,6 +25,11 @@ class Gotasku::Problem
 		data[:type]
 	end
 
+	# strip problem rating from goproblems.com 
+	def rating 
+		data[:rating]
+	end
+
 	# access or get the tree from the Parser
 	def tree 
 		@tree ||= Gotasku::Parser.new.parse(sgf)
@@ -80,10 +85,12 @@ class Gotasku::Problem
 				doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
 				sgf = doc.css("div#player-container").text.gsub(/\r?\n/, '')
 				difficulty = Gotasku::DifficultyString.new(
-					doc.css("div.difficulty a").text).convert
+					            doc.css("div.difficulty a").text).convert
 				type = doc.css("div.prob_genre").text
+				rating = Gotasku::RatingString.new(
+									doc.css("div.probstars")[0][:class]).convert
 
-				{sgf: sgf, difficulty: difficulty, type: type}
+				{sgf: sgf, difficulty: difficulty, type: type, rating: rating}
 			end
 		end
 end
