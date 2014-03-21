@@ -1,6 +1,8 @@
 require 'minitest/autorun'
 require 'stringio'
 
+load 'variables.rb' # username and password for testing
+
 class GotaskuCLITest < MiniTest::Unit::TestCase
 
 	def test_get_problem
@@ -41,13 +43,20 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 
   def test_display_problem_data
 		io = StringIO.new
-		io.puts(`gotasku data --id 1000`)
+		io.puts(`gotasku display --id 1000`)
 		io.rewind
 		output = io.read
 		assert_match /id: 1000/, output
 		assert_match /type: life and death/, output
 		assert_match /rating: 3/, output
 		assert_match /difficulty: 6 dan/, output
+	end
+
+	def test_login
+		io = StringIO.new
+		io.puts(`gotasku login --username #{::USERNAME} --password #{::PASSWORD}`)
+    io.rewind
+		assert_match /Gotasku::Session/, io.read
 	end
 
 =begin
