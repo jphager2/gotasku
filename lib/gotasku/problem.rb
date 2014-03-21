@@ -10,8 +10,18 @@ class Gotasku::Problem
 		@sgf = options[:sgf]
 
 		if @sgf 
+			# checks if sgf is a sgf file, and reads it if it is
+      if @sgf =~ /\.sgf/ && File.exists?(@sgf)
+				@sgf = File.open(@sgf, 'r').read
+			end
+
 			@data = options[:data] || {}
 		end
+	end
+
+	# print out information on problem on screen
+	def display 
+		Gotasku::Display.show(self)
 	end
 
 	# access sgf or strip problem sgf from goproblems.com 
@@ -41,7 +51,7 @@ class Gotasku::Problem
 
 	# saves the sgf 
 	def save
-		tree.save("#{id}.sgf")
+		tree.save("#{id || Time.now.to_i}.sgf")
 	end
 
 	# this method is not finished

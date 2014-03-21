@@ -9,18 +9,20 @@ def get_help
   puts "Try `gotasku --help`"
 end
 
-accepted_commands = %w[ save data difficulty rating type ]
+accepted_commands = %w[ 
+                    display sgf id save data difficulty rating type ]
 
 options = {}
 optparse = OptionParser.new do |opts|
 
-	options[:id] = ""
+	options[:id] = nil 
 	opts.on( '-i', '--id Num', Integer, "Provide the problem id" ) do |id|
 		  options[:id] = id 
 	end
 
-  options[:sgf] = ""
-	opts.on( '-s', '--sgf [String][FILE]', "Provide the problem SGF" ) do |sgf|
+  options[:sgf] = nil 
+	opts.on( '-s', '--sgf [String][FILE]', 
+					"Provide the problem SGF" ) do |sgf|
 		  options[:sgf] = sgf 
 	end
 end

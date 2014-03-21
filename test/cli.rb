@@ -24,11 +24,18 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 		assert_includes io.read, "AB[aa][bb][cc]AW[dd][ee]" 
 	end
 
+	def test_get_problem_with_sgf_from_file
+    io = StringIO.new
+		io.puts(`gotasku --sgf john.sgf`)
+		io.rewind 
+		assert_includes io.read, "AW[cc]" 
+	end
+
   def test_save_problem
     name = '1000.sgf'
 
 		File.delete(name) if File.exists?(name) 
-		`gotasku save --id 1000`
+		`gotasku save --id 1000 --sgf '(;AB[aa][bb][cc]AW[ab][bc][cd])'`
 		assert_includes Dir.glob('*.sgf'), name 
 	end
 
