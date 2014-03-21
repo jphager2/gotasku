@@ -9,8 +9,18 @@ def get_help
   puts "Try `gotasku --help`"
 end
 
-accepted_commands = %w[ 
-                    display sgf id save data difficulty rating type ]
+def problem(options)
+  Gotasku::Problem.new(options)
+end
+
+def prompt(text)
+	print(text)
+	$stdin.gets.chomp.strip
+end
+
+problem_commands = %w[ display sgf id save data difficulty 
+                       rating type ]
+session_commands = %w[ login ]
 
 options = {}
 optparse = OptionParser.new do |opts|
@@ -25,6 +35,18 @@ optparse = OptionParser.new do |opts|
 					"Provide the problem SGF" ) do |sgf|
 		  options[:sgf] = sgf 
 	end
+
+  options[:username] = nil 
+	opts.on( '-u', '--username Username', 
+					"Provide your Username" ) do |username|
+		  options[:username] = username 
+	end
+	
+  options[:password] = nil 
+	opts.on( '-p', '--password Password', 
+					"Provide your Password" ) do |password|
+		  options[:password] = password 
+	end
 end
 
 optparse.parse!
@@ -33,14 +55,18 @@ optparse.parse!
 if ARGV.length > 1
 	get_help
 	exit
-else
-	problem = Gotasku::Problem.new(options)	
 end
 
-if accepted_commands.include?(ARGV[0])
-	p problem.send(ARGV[0].to_sym)
+if session_commands.include?(ARGV[0])
+	options[:username] ||= prompt("Username: ")
+	options[:password] ||= prompt("Password: ")
+
+	user = Gotasku::User.new(options[:username], options[:password])
+	p Gotasku::Session.new(user)
+elsif problem_commands.include?(ARGV[0])
+	p problem(options).send(ARGV[0].to_sym)
 elsif ARGV[0].nil?
-	p problem
+	p problem(options)
 else
 	get_help
 end
