@@ -4,6 +4,8 @@ require 'sgf'
 require 'mechanize'
 
 require_relative 'gotasku/gotasku'
+
+require_relative 'gotasku/exceptions'
 require_relative 'gotasku/problem'
 require_relative 'gotasku/difficulty_string'
 require_relative 'gotasku/rating_string'
