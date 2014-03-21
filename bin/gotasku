@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+require_relative "../lib/gotasku"
+
+def get_help
+  puts "\"gotasku #{ARGV.join(" ")}\" isn't a command I know."
+  puts "Try `gotasku --help`"
+end
+
+accepted_commands = %w[ save data difficulty rating type ]
+
+options = {}
+optparse = OptionParser.new do |opts|
+
+	options[:id] = ""
+	opts.on( '-i', '--id Num', Integer, "Provide the problem id" ) do |id|
+		  options[:id] = id 
+	end
+
+  options[:sgf] = ""
+	opts.on( '-s', '--sgf [String][FILE]', "Provide the problem SGF" ) do |sgf|
+		  options[:sgf] = sgf 
+	end
+end
+
+optparse.parse!
+
+# if multiple commands are given
+if ARGV.length > 1
+	get_help
+	exit
+else
+	problem = Gotasku::Problem.new(options)	
+end
+
+if accepted_commands.include?(ARGV[0])
+	p problem.send(ARGV[0].to_sym)
+elsif ARGV[0].nil?
+	p problem
+else
+	get_help
+end

@@ -5,7 +5,7 @@ class Gotasku::Problem
 	attr_reader :id
 
 	# initializes with a hash of options
-	def initialize(options)
+	def initialize(options = {})
 		@id  = options[:id]
 		@sgf = options[:sgf]
 
@@ -89,7 +89,7 @@ class Gotasku::Problem
 				doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
 				sgf = doc.css("div#player-container").text.gsub(/\r?\n/, '')
 				difficulty = Gotasku::DifficultyString.new(
-					            doc.css("div.difficulty a").text).convert
+					            doc.css("div.difficulty a").text)
 				type = doc.css("div.prob_genre").text
 				rating = Gotasku::RatingString.new(
 									doc.css("div.probstars")[0][:class]).convert
