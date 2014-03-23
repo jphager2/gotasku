@@ -6,3 +6,5 @@
 
 variables.rb
 
+/db/* 
+!/db/tasks/

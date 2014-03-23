@@ -1,3 +1,5 @@
+require_relative 'db/tasks/db-tasks.rb' 
+
 task :run_all_tests do
 	Dir.glob('test/*.rb').each {|file| load file}
 end
