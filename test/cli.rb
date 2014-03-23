@@ -27,6 +27,7 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 	end
 
 	def test_get_problem_with_sgf_from_file
+		File.open('john.sgf', 'w') {|f| f.write('(;AW[cc][cd][ad]AB[aa])')}
     io = StringIO.new
 		io.puts(`gotasku --sgf john.sgf`)
 		io.rewind 

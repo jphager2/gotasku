@@ -19,6 +19,15 @@ class Gotasku::Problem
 		end
 	end
 
+  # get the id of the last problem on goproblems.com
+	def self.last_problem_id
+		@@last_problem_id ||= begin
+			doc = Nokogiri::HTML(open('http://www.goproblems.com/').read)
+			link = doc.css('td a').select {|a| a[:href] =~ /^\/\d+\z/}[0]
+		  link[:href].slice(/\d+/).to_i
+		end
+	end
+	
 	# print out information on problem on screen
 	def display 
 		Gotasku::Display.show(self)
@@ -92,6 +101,10 @@ class Gotasku::Problem
 		end
 	end
 
+	def blank?
+		sgf == '(;)'
+	end
+
 	private
 		def data 
 			@data ||= begin
@@ -107,10 +120,15 @@ class Gotasku::Problem
 				rating = Gotasku::RatingString.new(
 									doc.css("div.probstars")[0][:class]).convert
 
-				{sgf: sgf, difficulty: difficulty, type: type, rating: rating}
+				{
+					sgf: sgf_text, 
+					difficulty: difficulty, 
+					type: type, 
+					rating: rating
+				}
 
 			rescue Gotasku::NotFound
-				puts "This problem cannot be found"
+				# puts "This problem cannot be found"
 
 				# at the moment, this seems the best solution, not ideal though
 				# because it allows for problems to be saved even if they are not 
