@@ -105,35 +105,35 @@ class Gotasku::Problem
 		sgf == '(;)'
 	end
 
-	private
-		def data 
-			@data ||= begin
-				# get sgf from go problems  
-				doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
-				sgf_text = doc.css("div#player-container").text.gsub(/\r?\n/, '')
+	def data 
+		@data ||= begin
+			# get sgf from go problems  
+			doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
+			sgf_text = doc.css("div#player-container").text.gsub(/\r?\n/, '')
 
-				raise Gotasku::NotFound if sgf_text.empty?
+			raise Gotasku::NotFound if sgf_text.empty?
 
-				difficulty = Gotasku::DifficultyString.new(
-											doc.css("div.difficulty a").text)
-				type = doc.css("div.prob_genre").text
-				rating = Gotasku::RatingString.new(
-									doc.css("div.probstars")[0][:class]).convert
+			difficulty = Gotasku::DifficultyString.new(
+										doc.css("div.difficulty a").text)
+			type = doc.css("div.prob_genre").text
+			rating = Gotasku::RatingString.new(
+								doc.css("div.probstars")[0][:class]).convert
 
-				{
-					sgf: sgf_text, 
-					difficulty: difficulty, 
-					type: type, 
-					rating: rating
-				}
+			{
+				id: @id,
+				sgf: sgf_text, 
+				difficulty: difficulty, 
+				type: type, 
+				rating: rating
+			}
 
-			rescue Gotasku::NotFound
-				# puts "This problem cannot be found"
+		rescue Gotasku::NotFound
+			# puts "This problem cannot be found"
 
-				# at the moment, this seems the best solution, not ideal though
-				# because it allows for problems to be saved even if they are not 
-				# found
-				{sgf: '(;)'}
-			end
+			# at the moment, this seems the best solution, not ideal though
+			# because it allows for problems to be saved even if they are not 
+			# found
+			{sgf: '(;)'}
 		end
+	end
 end
