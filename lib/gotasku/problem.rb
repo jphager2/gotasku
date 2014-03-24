@@ -8,6 +8,7 @@ class Gotasku::Problem
 	def initialize(options = {})
 		@id  = options[:id]
 		@sgf = options[:sgf]
+		@data = options[:data]
 
 		if @sgf 
 			# checks if sgf is a sgf file, and reads it if it is
@@ -15,7 +16,7 @@ class Gotasku::Problem
 				@sgf = File.open(@sgf, 'r').read
 			end
 
-			@data = options[:data] || {}
+			@data ||= {}
 		end
 	end
 
@@ -134,6 +135,9 @@ class Gotasku::Problem
 			# because it allows for problems to be saved even if they are not 
 			# found
 			{sgf: '(;)'}
+		rescue SocketError
+			puts "Poor internet connection"
+			{sgf: '(;)'} 
 		end
 	end
 end
