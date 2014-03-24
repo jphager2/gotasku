@@ -51,7 +51,7 @@ class Gotasku::Query
 				# throw an exception if the input is invalid
 				unless response.class == Array and 
 					     not(response.find {|item| item =~ /[a-z]/})
-					raise InvalidEntry
+					raise Gotasku::InvalidEntry
 				end
 
 				response.collect {|item| item.to_i}
@@ -87,12 +87,14 @@ class Gotasku::Query
 			    }
 
 			q.keys.each do |key|
-				if self.prompt("Do you want to filter by #{key} (y/n)? ", 'y', 'n')
+				if self.prompt("Do you want to filter by #{key} (y/n)? ", 
+											 'y', 'n')
 					list = q[key].call
 					Gotasku::Display.show(list)
 					puts '=' * 40
-					values = self.prompt("Please type the index/number for the values " +
-								               "you would like to filter for (e.g. 0, 3, 4): ")
+					values = self.prompt(
+						"Please type the index/number for the values " +
+					  "you would like to filter for (e.g. 0, 3, 4): ")
 
 					values.collect! {|value| list[value]}
 					query_build[key] = { "$in" => values }

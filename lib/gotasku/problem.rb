@@ -8,7 +8,6 @@ class Gotasku::Problem
 	def initialize(options = {})
 		@id   = options["id"]
 		@sgf  = options["sgf"]
-		@data = options["data"]
 
 		if @sgf 
 			# checks if sgf is a sgf file, and reads it if it is
@@ -17,6 +16,13 @@ class Gotasku::Problem
 			end
 
 			@data ||= {}
+		end
+
+	  # overrides sgf and id if they are provided in the option data	
+		if options["data"]
+			@data = options["data"]
+			@id   = @data["id"]  || @id
+			@sgf  = @data["sgf"] || @sgf
 		end
 	end
 
