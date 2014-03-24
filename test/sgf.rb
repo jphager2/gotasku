@@ -3,7 +3,7 @@ require_relative '../lib/gotasku'
 
 class GotaskuProblemTest < MiniTest::Unit::TestCase
 	def setup
-		@problem = Gotasku::Problem.new(id: 17625)
+		@problem = Gotasku::Problem.new("id" => 17625)
 	end
 
 	def test_gets_id
@@ -61,7 +61,7 @@ C[Black is unconditionally alive.
 C[Black has had another chance to repair his defect.
 ]))'.gsub(/\r?\n/, '')
 
-		assert_equal sgf, Gotasku::Problem.new(id: 1000).sgf
+		assert_equal sgf, Gotasku::Problem.new("id" => 1000).sgf
 	end
 
 	def test_gets_tree_for_sgf

@@ -25,15 +25,15 @@ session_commands = %w[ login ]
 options = {}
 optparse = OptionParser.new do |opts|
 
-	options[:id] = nil 
+	options["id"] = nil 
 	opts.on( '-i', '--id Num', Integer, "Provide the problem id" ) do |id|
-		  options[:id] = id 
+		  options["id"] = id 
 	end
 
-  options[:sgf] = nil 
+  options["sgf"] = nil 
 	opts.on( '-s', '--sgf [String][FILE]', 
 					"Provide the problem SGF" ) do |sgf|
-		  options[:sgf] = sgf 
+		  options["sgf"] = sgf 
 	end
 
   options[:username] = nil 

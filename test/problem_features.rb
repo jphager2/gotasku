@@ -3,7 +3,7 @@ require_relative '../lib/gotasku'
 
 class GotaskuFeatureTest < MiniTest::Unit::TestCase
 	def setup
-		@problem = Gotasku::Problem.new(id: 1000)
+		@problem = Gotasku::Problem.new("id" => 1000)
 	end
 
 	def test_gets_difficulty
