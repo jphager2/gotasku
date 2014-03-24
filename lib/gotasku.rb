@@ -2,6 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'sgf'
 require 'mechanize'
+require 'mongo'
 
 require_relative 'gotasku/gotasku'
 
