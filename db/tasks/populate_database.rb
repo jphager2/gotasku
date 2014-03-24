@@ -33,5 +33,14 @@ namespace :problems do
 	desc "Structure the problems collection"
 	task :structure do
 		collection = Mongo::MongoClient.new.db('sgf').collection('problems')
+		collection.ensure_index( 
+														{id: Mongo::ASCENDING}, 
+														{unique: true, dropDups: true})
+		collection.create_index(diff_num: Mongo::DESCENDING)
+		collection.create_index(rating: Mongo::DESCENDING)
+		collection.create_index("type")
 	end
+
+	desc "Populate and structure problems collection"
+  task default: [:populate, :structure]	
 end
