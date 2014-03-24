@@ -1,3 +1,5 @@
+require_relative '../lib/gotasku'
+
 require 'minitest/autorun'
 require 'stringio'
 
