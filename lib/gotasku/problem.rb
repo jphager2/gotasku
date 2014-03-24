@@ -1,5 +1,7 @@
 class Gotasku::Problem
 
+	# going to make a major refactor
+	
 	@@uri = "http://www.goproblems.com/"
 
 	attr_reader :id
