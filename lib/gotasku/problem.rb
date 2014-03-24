@@ -1,16 +1,14 @@
 class Gotasku::Problem
 
-	# going to make a major refactor
-	
 	@@uri = "http://www.goproblems.com/"
 
 	attr_reader :id
 
 	# initializes with a hash of options
 	def initialize(options = {})
-		@id  = options[:id]
-		@sgf = options[:sgf]
-		@data = options[:data]
+		@id   = options["id"]
+		@sgf  = options["sgf"]
+		@data = options["data"]
 
 		if @sgf 
 			# checks if sgf is a sgf file, and reads it if it is
@@ -38,22 +36,22 @@ class Gotasku::Problem
 
 	# access sgf or strip problem sgf from goproblems.com 
 	def sgf
-		@sgf ||= data[:sgf]
+		@sgf ||= data["sgf"]
 	end
 
 	# strip problem difficulty from goproblems.com
 	def difficulty
-		data[:difficulty]
+		data["difficulty"]
 	end
 
 	# strip problem type from goproblems.com
 	def type 
-		data[:type]
+		data["type"]
 	end
 
 	# strip problem rating from goproblems.com 
 	def rating 
-		data[:rating]
+		data["rating"]
 	end
 
 	# access or get the tree from the Parser
@@ -123,12 +121,12 @@ class Gotasku::Problem
 								doc.css("div.probstars")[0][:class]).convert
 
 			{
-				id: @id,
-				sgf: sgf_text, 
-				difficulty: difficulty, 
-				diff_num: difficulty.convert,
-				type: type, 
-				rating: rating
+				"id"         => @id,
+				"sgf"        => sgf_text, 
+				"difficulty" => difficulty, 
+				"diff_num"   => difficulty.convert,
+				"type"       => type, 
+				"rating"     => rating
 			}
 
 		rescue Gotasku::NotFound
