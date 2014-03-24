@@ -1,6 +1,8 @@
 require 'rake'
 require 'mongo'
 
+require_relative 'populate_database'
+
 namespace :db do
 	desc "Create the database"
 	task :create do

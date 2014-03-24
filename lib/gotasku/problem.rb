@@ -124,6 +124,7 @@ class Gotasku::Problem
 				id: @id,
 				sgf: sgf_text, 
 				difficulty: difficulty, 
+				diff_num: difficulty.convert,
 				type: type, 
 				rating: rating
 			}
@@ -135,6 +136,7 @@ class Gotasku::Problem
 			# because it allows for problems to be saved even if they are not 
 			# found
 			{sgf: '(;)'}
+
 		rescue SocketError
 			puts "Poor internet connection"
 			{sgf: '(;)'} 
