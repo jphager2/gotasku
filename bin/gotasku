@@ -25,17 +25,33 @@ session_commands = %w[ login ]
 options = {}
 optparse = OptionParser.new do |opts|
 
+	opts.banner = "Gotasku"
+	opts.separator  ""
+	opts.separator  "Problem Commands"
+	problem_commands.each do |c|
+		opts.separator  "   #{c}" 
+	end
+	
+	opts.separator  ""
+	opts.separator  "Options"
+
 	options["id"] = nil 
 	opts.on( '-i', '--id Num', Integer, "Provide the problem id" ) do |id|
 		  options["id"] = id 
 	end
 
   options["sgf"] = nil 
-	opts.on( '-s', '--sgf [String][FILE]', 
+	opts.on( '-s', '--sgf String|FILE', 
 					"Provide the problem SGF" ) do |sgf|
 		  options["sgf"] = sgf 
 	end
 
+  opts.separator "Session Commands"
+	session_commands.each do |c|
+		opts.separator  "   #{c}" 
+	end
+
+	opts.separator "Options"
   options[:username] = nil 
 	opts.on( '-u', '--username Username', 
 					"Provide your Username" ) do |username|
@@ -46,6 +62,11 @@ optparse = OptionParser.new do |opts|
 	opts.on( '-p', '--password Password', 
 					"Provide your Password" ) do |password|
 		  options[:password] = password 
+	end
+
+	opts.separator "Help"
+	opts.on("-h","--help","help") do
+	  puts optparse
 	end
 end
 

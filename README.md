@@ -3,100 +3,113 @@ gotasku
 
 Saving and opening tsumego
 
-Use
+	_Use_
 
-New problem. You can provide "id", "sgf", or "data" options.
-  "id" => Integer (id of goproblem.com problem)
-  "sgf" => String or File of SGF
-  "data" => Hash with any of the following keys 
-            ("id", "sgf", "difficulty", 
-             "diff_num", "type", "rating") 
+  *Problem*
 
-Gotasku::Problem.new(options)
+	New problem. You can provide "id", "sgf", or "data" options.
+		"id" => Integer (id of goproblem.com problem)
+		"sgf" => String or File of SGF
+		"data" => Hash with any of the following keys 
+							("id", "sgf", "difficulty", 
+							 "diff_num", "type", "rating") 
 
-Gotasku::Problem.new("id" => 1000)
+	Gotasku::Problem.new(options)
 
-Gotasku::Problem.new("sgf" => "problem.sgf")
-Gotasku::Problem.new("sgf" => "(;AB[aa]AW[ab]")
+	Gotasku::Problem.new("id" => 1000)
 
-Gotasku::Problem.new("data" => {"id" => 1000,
-                                "sgf" => "(;AB[aa]AW[ab])",
-                                "difficulty" => "6 dan",
-                                "diff_num" => -6,
-                                "type" => "life and death",
-                                "rating" => 3})
+	Gotasku::Problem.new("sgf" => "problem.sgf")
+	Gotasku::Problem.new("sgf" => "(;AB[aa]AW[ab]")
 
-You can access Problem data with #sgf, #id, #difficulty, #type, 
- #rating, and #data instance methods
+	Gotasku::Problem.new("data" => {"id" => 1000,
+																	"sgf" => "(;AB[aa]AW[ab])",
+																	"difficulty" => "6 dan",
+																	"diff_num" => -6,
+																	"type" => "life and death",
+																	"rating" => 3})
 
-prob = Gotasku::Problem.new("id" => 10000)
-prob.data
-prob.difficulty
+	You can access Problem data with #sgf, #id, #difficulty, #type, 
+	 #rating, and #data instance methods
 
-Gotasku use SgfParser to parse the SGF and save it.
+	prob = Gotasku::Problem.new("id" => 10000)
+	prob.data
+	prob.difficulty
 
-You can get the tree from SGF with the #tree instance method
+	Gotasku use SgfParser to parse the SGF and save it.
 
-prob.tree
+	You can get the tree from SGF with the #tree instance method
 
-And you can save the file with the #save instance method 
+	prob.tree
 
-prob.save
+	And you can save the file with the #save instance method 
 
-The file will be saved as "#{id}.sgf" or using a time stamp if no id.
+	prob.save
 
-\*see MongoDB for more
+	The file will be saved as "#{id}.sgf" or using a time stamp if no id.
 
-
-User
-
-You can create a user object.
-
-user = Gotasku::User.new('username', 'password')
-
-Session
-
-You can login to goproblems.com by creating a new session object.
-The current session is saved in the @@current\_session class variable 
-
-Gotasku::Session.new(user)
+	\*see MongoDB for more
 
 
-For MongoDB
+	*User*
 
-If you have MongoDB installed, you can run the rake tasks from the 
-root directory of the gem:
+	You can create a user object.
 
-rake db:create
-rake problems
+	user = Gotasku::User.new('username', 'password')
 
-The first will create the database, the second will populate a 
-collection with all the go problems from goproblems.com.
+	*Session*
 
-Querying
+	You can login to goproblems.com by creating a new session object.
+	The current session is saved in the @@current\_session class variable 
 
-You can build a query with Gotasku::Query.create (you will be prompted
-on how you want to filter the problems collection.
+	Gotasku::Session.new(user)
 
-Gotasku::Query.create
 
-Or you can query the collection directly Gotasku::Query.new(query\_hash)
+	_*For MongoDB*_
 
-Gotasku::Query.new({"id" => 1000})
+	If you have MongoDB installed, you can run the rake tasks from the 
+	root directory of the gem:
 
-This returns a Gotasku::Query object, with an instance variable (@found)
-that holds the Mongo::Cursor object from the query.
+	rake db:create
+	rake problems
 
-query = Gotasku::Query.new({"type" => "life and death"})
-query.found 
+	The first will create the database, the second will populate a 
+	collection with all the go problems from goproblems.com.
 
-Gotasku::Query has a #to\_a instance method to get an array from the
-Mongo::Cursor object.
+	_Querying_
 
-query.to\_a
+	You can build a query with Gotasku::Query.create (you will be prompted
+	on how you want to filter the problems collection.
 
-Problem 
+	Gotasku::Query.create
 
-index = 0
-Gotasku::Problem.new("data", query.to\_a[index])
+	Or you can query the collection directly Gotasku::Query.new(query\_hash)
+
+	Gotasku::Query.new({"id" => 1000})
+
+	This returns a Gotasku::Query object, with an instance variable (@found)
+	that holds the Mongo::Cursor object from the query.
+
+	query = Gotasku::Query.new({"type" => "life and death"})
+	query.found 
+
+	Gotasku::Query has a #to\_a instance method to get an array from the
+	Mongo::Cursor object.
+
+	query.to\_a
+
+	*Problem* 
+
+	index = 0
+	Gotasku::Problem.new("data", query.to\_a[index])
+
+  _Executable_
+
+  There is an executable in the bin folder, which you can add to your 
+  PATH. It provides commands for getting data from or saving single 
+  problems.
+
+  gotasku --id 1000
+
+  gotasku --sgf "(;AW\[aa\]\[ab\]\[ac\]AB\[bb\]\[cc\])"
+
 

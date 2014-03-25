@@ -9,21 +9,21 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 
 	def test_get_problem
 	  io = StringIO.new
-	  io.puts(`gotasku`)
+		io.puts(`./bin/gotasku`)
 		io.rewind
 		assert_match /Gotasku::Problem/, io.read
 	end
 
 	def test_get_problem_with_id
 		io = StringIO.new
-		io.puts(`gotasku --id 1000`)
+		io.puts(`./bin/gotasku --id 1000`)
 		io.rewind
 		assert_match /@id=1000/, io.read
 	end
 
 	def test_get_problem_with_sgf
 		io = StringIO.new
-		io.puts(`gotasku --sgf '(;AB[aa][bb][cc]AW[dd][ee])'`)
+		io.puts(`./bin/gotasku --sgf '(;AB[aa][bb][cc]AW[dd][ee])'`)
 		io.rewind 
 		assert_includes io.read, "AB[aa][bb][cc]AW[dd][ee]" 
 	end
@@ -31,7 +31,7 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 	def test_get_problem_with_sgf_from_file
 		File.open('john.sgf', 'w') {|f| f.write('(;AW[cc][cd][ad]AB[aa])')}
     io = StringIO.new
-		io.puts(`gotasku --sgf john.sgf`)
+		io.puts(`./bin/gotasku --sgf john.sgf`)
 		io.rewind 
 		assert_includes io.read, "AW[cc]" 
 	end
@@ -40,13 +40,13 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
     name = '1000.sgf'
 
 		File.delete(name) if File.exists?(name) 
-		`gotasku save --id 1000 --sgf '(;AB[aa][bb][cc]AW[ab][bc][cd])'`
+		`./bin/gotasku save --id 1000 --sgf '(;AB[aa][bb][cc]AW[ab][bc][cd])'`
 		assert_includes Dir.glob('*.sgf'), name 
 	end
 
   def test_display_problem_data
 		io = StringIO.new
-		io.puts(`gotasku display --id 1000`)
+		io.puts(`./bin/gotasku display --id 1000`)
 		io.rewind
 		output = io.read
 		assert_match /id: 1000/, output
@@ -57,7 +57,7 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 
 	def test_login
 		io = StringIO.new
-		io.puts(`gotasku login --username #{::USERNAME} --password #{::PASSWORD}`)
+		io.puts(`./bin/gotasku login --username #{::USERNAME} --password #{::PASSWORD}`)
     io.rewind
 		assert_match /Gotasku::Session/, io.read
 	end
