@@ -1,6 +1,7 @@
 files = Dir.glob(Dir.pwd + '/**/*.rb')
 files.collect! {|file| file.sub(Dir.pwd + '/', '')}
-files.push('LICENSE', 'README.md', 'rakefile')
+files -= files.select {|file| file =~ /scripts/}
+files.push('LICENSE', 'README.md', 'rakefile', 'bin/gotasku')
 
 Gem::Specification.new do |s|
   s.name        = 'gotasku'
