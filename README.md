@@ -77,17 +77,18 @@ Saving and opening tsumego
 
 	_Querying_
 
-	You can build a query with Gotasku::Query.create (you will be prompted
-	on how you want to filter the problems collection.
+	You can build a query with Gotasku::Query.create (you will be 
+  prompted on how you want to filter the problems collection.
 
 	Gotasku::Query.create
 
-	Or you can query the collection directly Gotasku::Query.new(query\_hash)
+	Or you can query the collection directly 
+  Gotasku::Query.new(query\_hash)
 
 	Gotasku::Query.new({"id" => 1000})
 
-	This returns a Gotasku::Query object, with an instance variable (@found)
-	that holds the Mongo::Cursor object from the query.
+	This returns a Gotasku::Query object, with an instance variable 
+  (@found) that holds the Mongo::Cursor object from the query.
 
 	query = Gotasku::Query.new({"type" => "life and death"})
 	query.found 
@@ -108,8 +109,8 @@ Saving and opening tsumego
   PATH. It provides commands for getting data from or saving single 
   problems.
 
-  gotasku --id 1000
+  Use the help option to get more info:
 
-  gotasku --sgf "(;AW\[aa\]\[ab\]\[ac\]AB\[bb\]\[cc\])"
-
+  $ path/to/gem/bin/gotasku --help  
+ 
 
