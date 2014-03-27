@@ -13,6 +13,6 @@ Gem::Specification.new do |s|
   s.authors     = ['jphager2']
   s.email       = 'jphager2@gmail.com'
   s.files       = files 
-	s.executables << 'bin/gotasku'
+	s.executables << 'gotasku'
   s.license     = 'MIT'
 end
