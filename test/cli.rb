@@ -3,6 +3,7 @@ require_relative '../lib/gotasku'
 require 'minitest/autorun'
 require 'stringio'
 
+
 load 'variables.rb' # username and password for testing
 
 class GotaskuCLITest < MiniTest::Unit::TestCase
@@ -29,9 +30,9 @@ class GotaskuCLITest < MiniTest::Unit::TestCase
 	end
 
 	def test_get_problem_with_sgf_from_file
-		File.open('john.sgf', 'w') {|f| f.write('(;AW[cc][cd][ad]AB[aa])')}
+		File.open('./test/john.sgf', 'w') {|f| f.write('(;AW[cc][cd][ad]AB[aa])')}
     io = StringIO.new
-		io.puts(`./bin/gotasku --sgf john.sgf`)
+		io.puts(`./bin/gotasku --sgf ./test/john.sgf`)
 		io.rewind 
 		assert_includes io.read, "AW[cc]" 
 	end
