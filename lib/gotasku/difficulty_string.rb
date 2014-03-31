@@ -1,18 +1,18 @@
-# Difficulty string is a string of the difficulty of a Gotasku::Problem
+# Difficulty string is a string of the difficulty of a Gotasku::Problem 
 class Gotasku::DifficultyString < String
 
-	# convert difficulty string to number
+	# convert difficulty string to number (e.g. "6 dan".convert => -6)
 	def convert 
-	  case self
-		when /p/ #pro
-			# grab number, mulitply by -1 and subtract 10 
-			(self.slice(/\d+/).to_i * -1) - 10
-		when /d/ #dan
-			# grab number, multiply by -1 
-	  	(self.slice(/\d+/).to_i * -1)
-		when /k/ #kyu
-		  # grab number	
-		  self.slice(/\d+/).to_i	
+		int = self.slice(/\d+/).to_i
+
+		if self =~ /p/ or self =~ /d/ #pro or dan
+      # add ten if pro
+		  int	+ 10 if self =~ /p/ 
+      # mulitply by -1 
+			(int * -1)
+		elsif self =~ /k/ #kyu
+		  # just number	
+		  int	
 		else
 			nil
 		end
