@@ -1,3 +1,4 @@
+# Difficulty string is a string of the difficulty of a Gotasku::Problem
 class Gotasku::DifficultyString < String
 
 	# convert difficulty string to number
