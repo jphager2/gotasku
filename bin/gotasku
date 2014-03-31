@@ -21,6 +21,7 @@ end
 problem_commands = %w[ display sgf id save data difficulty 
                        rating type ]
 session_commands = %w[ login ]
+rake_commands    = %w[ test ]
 
 options = {}
 optparse = OptionParser.new do |opts|
@@ -64,6 +65,11 @@ optparse = OptionParser.new do |opts|
 		  options[:password] = password 
 	end
 
+	opts.separator "Other Commands"
+	rake_commands.each do |c|
+		opts.separator  "   #{c}" 
+	end
+
 	opts.separator "Help"
 	opts.on("-h","--help","help") do
 	  puts optparse
@@ -86,6 +92,8 @@ if session_commands.include?(ARGV[0])
 	p Gotasku::Session.new(user)
 elsif problem_commands.include?(ARGV[0])
 	p problem(options).send(ARGV[0].to_sym)
+elsif rake_commands.include?(ARGV[0])
+	puts `rake`
 elsif ARGV[0].nil?
 	p problem(options)
 else
