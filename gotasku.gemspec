@@ -5,7 +5,7 @@ files.push('LICENSE', 'README.md', 'rakefile', 'bin/gotasku')
 
 Gem::Specification.new do |s|
   s.name        = 'gotasku'
-  s.version     = '0.0.0'
+  s.version     = '0.0.1'
 	s.date        = "#{Time.now.strftime("%Y-%m-%d")}"
 	s.homepage    = 'https://github.com/jphager2/gotasku'
   s.summary     = 'Downloads SGFs of go problems'
