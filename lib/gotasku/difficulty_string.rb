@@ -1,4 +1,4 @@
-# Difficulty string is a string of the difficulty of a Gotasku::Problem 
+# difficulty string is a string of the difficulty of a gotasku problem 
 class Gotasku::DifficultyString < String
 
 	# convert difficulty string to number (e.g. "6 dan".convert => -6)

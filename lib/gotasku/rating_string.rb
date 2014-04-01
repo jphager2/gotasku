@@ -1,3 +1,4 @@
+# rating string is a string of the rating of a gotasku problem 
 class Gotasku::RatingString < String 
 
 	# convert string to number
