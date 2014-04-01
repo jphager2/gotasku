@@ -17,11 +17,11 @@ class GotaskuFeatureTest < MiniTest::Unit::TestCase
 	end
 
 	def test_gets_type
-		assert_equal @problem.type, 'life and death'
+		assert_equal 'life and death', @problem.type
 	end
 
 	def test_gets_rating 
-		assert_equal @problem.rating, 3
+		assert_equal 3, @problem.rating
 	end
 end
 

@@ -1,3 +1,4 @@
+# A gotasku go problem
 class Gotasku::Problem
 
 	@@uri = "http://www.goproblems.com/"
@@ -8,21 +9,22 @@ class Gotasku::Problem
 	def initialize(options = {})
 		@id   = options["id"]
 		@sgf  = options["sgf"]
-
-		if @sgf 
-			# checks if sgf is a sgf file, and reads it if it is
-      if @sgf =~ /\.sgf/ && File.exists?(@sgf)
-				@sgf = File.open(@sgf, 'r').read
-			end
-
-			@data ||= {}
-		end
+    @data = options["data"] 
 
 	  # overrides sgf and id if they are provided in the option data	
-		if options["data"]
-			@data = options["data"]
+		if @data 
 			@id   = @data["id"]  || @id
 			@sgf  = @data["sgf"] || @sgf
+		end
+
+		# checks if sgf is a sgf file, and reads it if it is
+		if @sgf =~ /\.sgf/ && File.exists?(@sgf)
+			@sgf = File.open(@sgf, 'r').read
+		end
+
+		# if sgf is given, make sure @data is assigned (i.e. if @data works)
+		if @sgf 
+			@data ||= {}
 		end
 	end
 
@@ -30,8 +32,8 @@ class Gotasku::Problem
 	def self.last_problem_id
 		@@last_problem_id ||= begin
 			doc = Nokogiri::HTML(open('http://www.goproblems.com/').read)
-			link = doc.css('td a').select {|a| a[:href] =~ /^\/\d+\z/}[0]
-		  link[:href].slice(/\d+/).to_i
+			links = doc.css('td a').select {|a| a[:href] =~ /^\/\d+\z/}
+			links.first[:href].slice(/\d+/).to_i
 		end
 	end
 	
@@ -65,7 +67,7 @@ class Gotasku::Problem
 		@tree ||= Gotasku::Parser.new.parse(sgf)
 	end
 
-	# saves the sgf 
+	# saves the sgf as a file 
 	def save
 		tree.save("#{id || Time.now.to_i}.sgf")
 	end
@@ -108,44 +110,13 @@ class Gotasku::Problem
 		end
 	end
 
+	# return true if problem has an empty sgf, else return false
 	def blank?
 		sgf == '(;)'
 	end
 
+	# get data for a problem
 	def data 
-		@data ||= begin
-			# get sgf from go problems  
-			doc = Nokogiri::HTML(open("#{@@uri}#{@id}").read) 
-			sgf_text = doc.css("div#player-container").text.gsub(/\r?\n/, '')
-
-			raise Gotasku::NotFound if sgf_text.empty?
-
-			difficulty = Gotasku::DifficultyString.new(
-										doc.css("div.difficulty a").text)
-			type = doc.css("div.prob_genre").text
-			rating = Gotasku::RatingString.new(
-								doc.css("div.probstars")[0][:class]).convert
-
-			{
-				"id"         => @id,
-				"sgf"        => sgf_text, 
-				"difficulty" => difficulty, 
-				"diff_num"   => difficulty.convert,
-				"type"       => type, 
-				"rating"     => rating
-			}
-
-		rescue Gotasku::NotFound
-			# puts "This problem cannot be found"
-
-			# at the moment, this seems the best solution, not ideal though
-			# because it allows for problems to be saved even if they are not 
-			# found
-			{sgf: '(;)'}
-
-		rescue SocketError
-			puts "Poor internet connection"
-			{sgf: '(;)'} 
-		end
+		@data ||=	Gotasku::Document.new("#{@@uri}#{@id}")
 	end
 end
