@@ -4,9 +4,8 @@ class Gotasku::Document < Hash
 	def initialize(uri)
 		@doc = Nokogiri::HTML(open(uri).read) 
 
+		# get data from goproblems.com problems page
     begin
-			# get sgf from go problems  
-
 			self.merge!( 
 								 	 {
 										 "id"         => @id,
@@ -18,16 +17,10 @@ class Gotasku::Document < Hash
 									 }
 								 )
 
-		rescue Gotasku::NotFound
-			# puts "This problem cannot be found"
-
+		rescue Gotasku::NotFound, SocketError
 			# at the moment, this seems the best solution, not ideal though
 			# because it allows for problems to be saved even if they are not 
 			# found
-			self.merge!({sgf: '(;)'})
-
-		rescue SocketError
-			# puts "Poor internet connection"
 			self.merge!({sgf: '(;)'}) 
 		end
 	end
