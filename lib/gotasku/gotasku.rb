@@ -1,4 +1,4 @@
-class Gotasku 
-
+# top level module 
+module Gotasku 
 end
 

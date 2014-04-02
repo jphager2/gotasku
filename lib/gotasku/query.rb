@@ -1,3 +1,4 @@
+# gotasku query object queries the mongo database
 class Gotasku::Query 
 	@@problems = Mongo::MongoClient.new.db('sgf').collection('problems')
 
@@ -58,49 +59,58 @@ class Gotasku::Query
 			end
 		end
 
-	  #gets unique set of types from collection
+	  # gets unique set of types from collection
 		def self.get_types
 			@@problems.distinct(:type).sort
 		end
 
-		#gets unique set of difficulties from collection
+		# gets unique set of difficulties from collection
 		def self.get_difficulties
-			@@problems.distinct(:difficulty).sort do |x, y| 
-				x = Gotasku::DifficultyString.new(x).convert
-				y = Gotasku::DifficultyString.new(y).convert
-				x <=> y
+			@@problems.distinct(:difficulty).sort do |one, two| 
+				one = Gotasku::DifficultyString.new(one).convert
+				two = Gotasku::DifficultyString.new(two).convert
+				one <=> two 
 			end
 		end
 		
-	  #gets unique set of ratings from collection
+	  # gets unique set of ratings from collection
 		def self.get_ratings
 			@@problems.distinct(:rating).sort
 		end
 
+		# get query hash 
+		def self.get_query
+      query = {
+								type:       -> {self.get_types},
+								difficulty: -> {self.get_difficulties},
+								rating:     -> {self.get_ratings}
+							}
+		end
+
+		# prompts user for filtering by key 
+		def self.prompt_for(key)
+      if self.prompt("Do you want to filter by #{key} (y/n)? ", 
+										 'y', 'n')
+			  yield	
+			end
+		end
+
 	  # runs a prompt to build a query for the database
 		def self.build_query
-			query_build = {} 
-			q = {
-						type:       -> {self.get_types},
-						difficulty: -> {self.get_difficulties},
-						rating:     -> {self.get_ratings}
-			    }
+			query = self.get_query	
 
-			q.keys.each do |key|
-				if self.prompt("Do you want to filter by #{key} (y/n)? ", 
-											 'y', 'n')
-					list = q[key].call
+			query.keys.each_with_object({}) do |key, query_build|
+			  self.prompt_for(key) do 
+					list = query[key].call
 					Gotasku::Display.show(list)
 					puts '=' * 40
 					values = self.prompt(
 						"Please type the index/number for the values " +
-					  "you would like to filter for (e.g. 0, 3, 4): ")
+						"you would like to filter for (e.g. 0, 3, 4): ")
 
 					values.collect! {|value| list[value]}
 					query_build[key] = { "$in" => values }
 				end
 			end
-
-			query_build
 		end
 end

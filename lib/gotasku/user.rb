@@ -1,3 +1,4 @@
+# user for goproblems.com
 class Gotasku::User 
 
 	attr_reader :username, :password
