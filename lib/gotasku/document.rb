@@ -11,7 +11,7 @@ class Gotasku::Document < Hash
 										 "id"         => @id,
 										 "sgf"        => get_sgf, 
 										 "difficulty" => difficulty = get_difficulty, 
-										 "diff_num"   => difficulty.convert,
+										 "diff_num"   => difficulty.to_i,
 										 "type"       => get_type, 
 										 "rating"     => get_rating
 									 }
@@ -50,6 +50,6 @@ class Gotasku::Document < Hash
     # grabs rating from document
 		def get_rating
       Gotasku::RatingString.new(
-				@doc.css("div.probstars")[0][:class]).convert
+				@doc.css("div.probstars")[0][:class]).to_i
 		end
 end

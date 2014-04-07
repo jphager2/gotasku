@@ -2,8 +2,9 @@
 class Gotasku::DifficultyString < String
 
 	# convert difficulty string to number (e.g. "6 dan".convert => -6)
-	def convert 
-		int = self.slice(/\d+/).to_i
+	# convert to integer implicit
+	def to_int 
+		int = Integer(self.slice(/\d+/))
 
 		if self =~ /p/ or self =~ /d/ #pro or dan
       # add ten if pro
@@ -16,6 +17,11 @@ class Gotasku::DifficultyString < String
 		else
 			nil
 		end
+	end
+
+	# convert to integer explicit
+	def to_i 
+		self.to_int 
 	end
 end
 

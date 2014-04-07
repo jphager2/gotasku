@@ -67,8 +67,8 @@ class Gotasku::Query
 		# gets unique set of difficulties from collection
 		def self.get_difficulties
 			@@problems.distinct(:difficulty).sort do |one, two| 
-				one = Gotasku::DifficultyString.new(one).convert
-				two = Gotasku::DifficultyString.new(two).convert
+				one = Gotasku::DifficultyString.new(one).to_i
+				two = Gotasku::DifficultyString.new(two).to_i
 				one <=> two 
 			end
 		end
