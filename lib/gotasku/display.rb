@@ -1,15 +1,23 @@
 # Displays Gotasku and Ruby objects in human readable forms
 class Gotasku::Display 
 
-	
-
-	# Displays the object correctly or says if it cannot display the object
+	# convenience method 
 	def self.show(object)
-		case object
+		new(object).show
+	end
+
+	# initialize with an object
+	def initialize(object)
+		@object = object
+	end
+
+	# Displays the object correctly or says it cannot display the object
+	def show
+		case @object
 		when ::Gotasku::Problem
-			self.show_problem(object)
+			show_problem(@object)
 		when ::Array
-			self.show_list(object)
+			show_list(@object)
 		else
 			puts "Sorry, I can't show that.."
 		end
@@ -17,14 +25,14 @@ class Gotasku::Display
 
 	private
 	  # Gives a line
-	  def self.line
+	  def line
 			"=" * 40
 		end
 
 		# Displays Gotasku::Problem
-		def self.show_problem(problem)
+		def show_problem(problem)
 			display =  [
-									self.line,
+									line,
 									"id: #{problem.id}",
 									"type: #{problem.type}",
 									"rating: #{problem.rating}",
@@ -34,7 +42,7 @@ class Gotasku::Display
 		end
 
 		# Displays Array 
-		def self.show_list(list)
+		def show_list(list)
 			list.each_with_index {|item, index| puts "#{index}...#{item}"}
 		end	
 end
