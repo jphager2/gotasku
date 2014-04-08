@@ -32,12 +32,12 @@ class Gotasku::Display
 		# Displays Gotasku::Problem
 		def show_problem(problem)
 			display =  [
-									line,
-									"id: #{problem.id}",
-									"type: #{problem.type}",
-									"rating: #{problem.rating}",
-									"difficulty: #{problem.difficulty}",
-								 ] 
+				line,
+				"id: #{problem.id}",
+				"type: #{problem.type}",
+				"rating: #{problem.rating}",
+				"difficulty: #{problem.difficulty}",
+			 ] 
 			puts display, display.first
 		end
 
