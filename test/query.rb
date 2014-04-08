@@ -6,7 +6,7 @@ require 'mongo'
 require 'stringio'
 
 # if Gotasku::Query is loaded, otherwise skip tests
-if Symbol.all_symbols.find {|symbol| symbol.to_s == "Gotasku::Query"}
+if defined?(Gotasku::Query) 
 	class GotaskuQueryTest < MiniTest::Unit::TestCase
 
 		def test_makes_query
