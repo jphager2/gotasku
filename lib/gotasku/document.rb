@@ -7,16 +7,15 @@ class Gotasku::Document < Hash
 		# get data from goproblems.com problems page
     begin
 			self.merge!( 
-								 	 {
-										 "id"         => @id,
-										 "sgf"        => get_sgf, 
-										 "difficulty" => difficulty = get_difficulty, 
-										 "diff_num"   => difficulty.to_i,
-										 "type"       => get_type, 
-										 "rating"     => get_rating
-									 }
-								 )
-
+			  {
+				  "id"         => @id,
+				  "sgf"        => get_sgf, 
+				  "difficulty" => difficulty = get_difficulty, 
+				  "diff_num"   => difficulty.to_i,
+				  "type"       => get_type, 
+				  "rating"     => get_rating
+			  }
+		  )
 		rescue Gotasku::NotFound, SocketError
 			# at the moment, this seems the best solution, not ideal though
 			# because it allows for problems to be saved even if they are not 
