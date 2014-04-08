@@ -4,9 +4,14 @@ class Gotasku::Query
 
 	attr_reader :found
 
-	# gets a Mongo::Cursor object
+	# gets a Mongo::Cursor object from a query hash
 	def initialize(query)
 		@found = @@problems.find(query) 
+	end
+
+	# builds a query and returns a Mongo::Cursor object
+	def self.create
+		self.new(self.build_query)
 	end
 
 	# returns an array of items in @found
@@ -14,21 +19,6 @@ class Gotasku::Query
 		@found.rewind!
 		@found.to_a
 	end
-
-	# returns a Mongo::Cursor object
-	def self.create
-		self.new(self.build_query)
-	end
-
-=begin
-	# key is a string or symbol
-	def self.sort_by(key)
-	end
-
-	# query is a hash 
-	def self.query_by(query)
-	end
-=end
 
 	private
 	  # prompts user for input
@@ -81,16 +71,18 @@ class Gotasku::Query
 		# get query hash 
 		def self.get_query
       query = {
-								type:       -> {self.get_types},
-								difficulty: -> {self.get_difficulties},
-								rating:     -> {self.get_ratings}
-							}
+				type:       -> {self.get_types},
+				difficulty: -> {self.get_difficulties},
+				rating:     -> {self.get_ratings}
+			}
 		end
 
 		# prompts user for filtering by key 
 		def self.prompt_for(key)
-      if self.prompt("Do you want to filter by #{key} (y/n)? ", 
-										 'y', 'n')
+      if self.prompt(
+					"Do you want to filter by #{key} (y/n)? ", 
+					'y', 'n'
+			  )
 			  yield	
 			end
 		end
