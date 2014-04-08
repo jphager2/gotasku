@@ -1,6 +1,7 @@
 # gotasku query object queries the mongo database
 class Gotasku::Query 
-	@@problems = Mongo::MongoClient.new.db('sgf').collection('problems')
+	@@problems = Mongo::MongoClient.new
+		.db(Gotasku::DB_NAME).collection('problems')
 
 	attr_reader :found
 

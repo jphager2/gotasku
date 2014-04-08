@@ -6,7 +6,7 @@ namespace :problems do
   desc "Populate the problems collection"
 	task :populate do
 		client = Mongo::MongoClient.new
-		db = client.db('sgf')
+		db = client.db(Gotasku::DB_NAME)
 		collection = db.collection('problems')
 
 		(0..Gotasku::Problem.last_problem_id).each do |id|
@@ -32,7 +32,7 @@ namespace :problems do
 
 	desc "Structure the problems collection"
 	task :structure do
-		collection = Mongo::MongoClient.new.db('sgf').collection('problems')
+		collection = Mongo::MongoClient.new.db(Gotasku::DB_NAME).collection('problems')
 		collection.ensure_index( 
 														{id: Mongo::ASCENDING}, 
 														{unique: true, dropDups: true})
