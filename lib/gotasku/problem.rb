@@ -1,7 +1,7 @@
 # A gotasku go problem
 class Gotasku::Problem
 
-	@@uri = "http://www.goproblems.com/"
+	BASE_URI = "http://www.goproblems.com/"
 
 	attr_reader :id
 
@@ -30,9 +30,9 @@ class Gotasku::Problem
 
   # get the id of the last problem on goproblems.com
 	def self.last_problem_id
-		@@last_problem_id ||= begin
+		@@LAST_PROBLEM_ID ||= begin
 			doc = Nokogiri::HTML(open('http://www.goproblems.com/').read)
-			links = doc.css('td a').select {|a| a[:href] =~ /^\/\d+\z/}
+			links = doc.css('td a').select {|link| link[:href] =~ /^\/\d+\z/}
 			links.first[:href].slice(/\d+/).to_i
 		end
 	end
@@ -117,6 +117,6 @@ class Gotasku::Problem
 
 	# get data for a problem
 	def data 
-		@data ||=	Gotasku::Document.new("#{@@uri}#{@id}")
+		@data ||=	Gotasku::Document.new("#{BASE_URI}#{@id}")
 	end
 end

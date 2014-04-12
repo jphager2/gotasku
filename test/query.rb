@@ -26,7 +26,7 @@ if defined?(Gotasku::Query)
 			$stdin   = file
 			$stdout  = output
 
-			query = Gotasku::Query.create
+			query = Gotasku::Query.build
 
 			$stdin  = temp_in
 			$stdout = temp_out
