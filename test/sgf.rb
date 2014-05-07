@@ -2,16 +2,16 @@ require 'minitest/autorun'
 require_relative '../lib/gotasku'
 
 class GotaskuProblemTest < MiniTest::Unit::TestCase
-	def setup
-		@problem = Gotasku::Problem.new("id" => 17625)
-	end
+  def setup
+    @problem = Gotasku::Problem.new("id" => 17625)
+  end
 
-	def test_gets_id
-		assert_equal 17625, @problem.id
-	end
+  def test_gets_id
+    assert_equal 17625, @problem.id
+  end
 
-	def test_gets_sgf
-		sgf = '(;AB[se]AB[rd]AB[qd]AB[qe]AB[qf]AB[qg]AB[oe]AB[oc]AB[pc]AB[ob]AW[mb]AW[mc]AW[me]AW[mg]AW[og]AW[ph]AW[qh]AW[rg]AW[re]AW[rf]AW[sc]AW[qc]AW[qb]AW[pb]AW[rb]AP[goproblems]
+  def test_gets_sgf
+    sgf = '(;AB[se]AB[rd]AB[qd]AB[qe]AB[qf]AB[qg]AB[oe]AB[oc]AB[pc]AB[ob]AW[mb]AW[mc]AW[me]AW[mg]AW[og]AW[ph]AW[qh]AW[rg]AW[re]AW[rf]AW[sc]AW[qc]AW[qb]AW[pb]AW[rb]AP[goproblems]
 (;B[ra]
 (;W[rc]
 (;B[sd];W[sa];B[sb]C[CHOICERIGHT])
@@ -27,11 +27,11 @@ class GotaskuProblemTest < MiniTest::Unit::TestCase
 (;B[sb];W[rc]TR[sd]TR[sa])
 (;B[rc];W[sb]TR[sd]TR[pa]))'.gsub(/\r?\n/, '')
 
-		assert_equal sgf, @problem.sgf
-	end
+    assert_equal sgf, @problem.sgf
+  end
 
-	def test_gets_another_sgf
-		sgf = '(;GM[1]FF[4]VW[]AP[Many Faces of Go:10.0]
+  def test_gets_another_sgf
+    sgf = '(;GM[1]FF[4]VW[]AP[Many Faces of Go:10.0]
 SZ[13]
 HA[0]
 ST[1]
@@ -61,19 +61,19 @@ C[Black is unconditionally alive.
 C[Black has had another chance to repair his defect.
 ]))'.gsub(/\r?\n/, '')
 
-		assert_equal sgf, Gotasku::Problem.new("id" => 1000).sgf
-	end
+    assert_equal sgf, Gotasku::Problem.new("id" => 1000).sgf
+  end
 
-	def test_gets_tree_for_sgf
-		assert_kind_of ::SGF::Tree, @problem.tree 
-	end
+  def test_gets_tree_for_sgf
+    assert_kind_of ::SGF::Tree, @problem.tree 
+  end
 
-	def test_saves_problem
-		file = Dir.pwd + '/17625.sgf'
+  def test_saves_problem
+    file = Dir.pwd + '/17625.sgf'
 
-		File.delete(file) if File.exist?(file)
-		@problem.save
+    File.delete(file) if File.exist?(file)
+    @problem.save
 
-		assert_includes Dir.glob(Dir.pwd + '/*.sgf'), file
-	end
+    assert_includes Dir.glob(Dir.pwd + '/*.sgf'), file
+  end
 end

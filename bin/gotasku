@@ -14,8 +14,8 @@ def problem(options)
 end
 
 def prompt(text)
-	print(text)
-	$stdin.gets.chomp.strip
+  print(text)
+  $stdin.gets.chomp.strip
 end
 
 problem_commands = %w[ display sgf id save data difficulty 
@@ -26,76 +26,76 @@ rake_commands    = %w[ test ]
 options = {}
 optparse = OptionParser.new do |opts|
 
-	opts.banner = "Gotasku"
-	opts.separator  ""
-	opts.separator  "Problem Commands"
-	problem_commands.each do |c|
-		opts.separator  "   #{c}" 
-	end
-	
-	opts.separator  ""
-	opts.separator  "Options"
+  opts.banner = "Gotasku"
+  opts.separator  ""
+  opts.separator  "Problem Commands"
+  problem_commands.each do |c|
+    opts.separator  "   #{c}" 
+  end
+  
+  opts.separator  ""
+  opts.separator  "Options"
 
-	options["id"] = nil 
-	opts.on( '-i', '--id Num', Integer, "Provide the problem id" ) do |id|
-		  options["id"] = id 
-	end
+  options["id"] = nil 
+  opts.on( '-i', '--id Num', Integer, "Provide the problem id" ) do |id|
+      options["id"] = id 
+  end
 
   options["sgf"] = nil 
-	opts.on( '-s', '--sgf String|FILE', 
-					"Provide the problem SGF" ) do |sgf|
-		  options["sgf"] = sgf 
-	end
+  opts.on( '-s', '--sgf String|FILE', 
+          "Provide the problem SGF" ) do |sgf|
+      options["sgf"] = sgf 
+  end
 
   opts.separator "Session Commands"
-	session_commands.each do |c|
-		opts.separator  "   #{c}" 
-	end
+  session_commands.each do |c|
+    opts.separator  "   #{c}" 
+  end
 
-	opts.separator "Options"
+  opts.separator "Options"
   options[:username] = nil 
-	opts.on( '-u', '--username Username', 
-					"Provide your Username" ) do |username|
-		  options[:username] = username 
-	end
-	
+  opts.on( '-u', '--username Username', 
+          "Provide your Username" ) do |username|
+      options[:username] = username 
+  end
+  
   options[:password] = nil 
-	opts.on( '-p', '--password Password', 
-					"Provide your Password" ) do |password|
-		  options[:password] = password 
-	end
+  opts.on( '-p', '--password Password', 
+          "Provide your Password" ) do |password|
+      options[:password] = password 
+  end
 
-	opts.separator "Other Commands"
-	rake_commands.each do |c|
-		opts.separator  "   #{c}" 
-	end
+  opts.separator "Other Commands"
+  rake_commands.each do |c|
+    opts.separator  "   #{c}" 
+  end
 
-	opts.separator "Help"
-	opts.on("-h","--help","help") do
-	  puts optparse
-	end
+  opts.separator "Help"
+  opts.on("-h","--help","help") do
+    puts optparse
+  end
 end
 
 optparse.parse!
 
 # if multiple commands are given
 if ARGV.length > 1
-	get_help
-	exit
+  get_help
+  exit
 end
 
 if session_commands.include?(ARGV[0])
-	options[:username] ||= prompt("Username: ")
-	options[:password] ||= prompt("Password: ")
+  options[:username] ||= prompt("Username: ")
+  options[:password] ||= prompt("Password: ")
 
-	user = Gotasku::User.new(options[:username], options[:password])
-	p Gotasku::Session.new(user)
+  user = Gotasku::User.new(options[:username], options[:password])
+  p Gotasku::Session.new(user)
 elsif problem_commands.include?(ARGV[0])
-	p problem(options).send(ARGV[0].to_sym)
+  p problem(options).send(ARGV[0].to_sym)
 elsif rake_commands.include?(ARGV[0])
-	puts `rake`
+  puts `rake`
 elsif ARGV[0].nil?
-	p problem(options)
+  p problem(options)
 else
-	get_help
+  get_help
 end
