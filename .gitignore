@@ -6,5 +6,10 @@
 
 variables.rb
 
-/db/* 
+/db/journal/
+/db/local.0
+/db/local.ns
+/db/mongod.lock
 !/db/tasks/
+
+*.gem
