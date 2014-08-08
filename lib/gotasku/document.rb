@@ -16,11 +16,11 @@ class Gotasku::Document < Hash
           "rating"     => get_rating
         }
       )
-    rescue Gotasku::NotFound, SocketError
+    #rescue Gotasku::NotFound, SocketError
       # at the moment, this seems the best solution, not ideal though
       # because it allows for problems to be saved even if they are not 
       # found
-      self.merge!({sgf: '(;)'}) 
+      # self.merge!({sgf: '(;)'}) 
     end
   end
 
@@ -30,7 +30,7 @@ class Gotasku::Document < Hash
       sgf = @doc.css("div#player-container").text.gsub(/\r?\n/, '')
 
       if sgf.empty?
-        raise Gotasku::NotFound 
+        raise Gotasku::NotFound, "SGF was empty for #{@doc.object_id}"
       else
         sgf 
       end

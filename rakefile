@@ -4,8 +4,4 @@ task :run_all_tests do
   Dir.glob('test/*.rb').each {|file| load file}
 end
 
-task :delete_sgfs do
-  Dir.glob('*.sgf').each {|file| File.delete(file)}
-end
-
 task default: [:run_all_tests]
