@@ -58,10 +58,10 @@ class Gotasku::Display
       attr_reader :tree
       def initialize(tree)
         @tree   = tree
-        @r_tree = {}
         @parent = tree.root
         @parent_index = 0
         @parent_level = 0
+        @r_tree = {@parent => [0,0]}
       end
 
       def show
