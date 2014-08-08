@@ -50,30 +50,42 @@ class Gotasku::Display
 
     # Displays an sgf tree
     def show_tree(tree)
-      inverted_ordered_hash(r_tree_hash(tree))
+      Tree.new(tree).show
     end
 
-    def inverted_ordered_hash(h)
-      h.each_with_object(Hash.new {|h, k| h[k] = []}) do |(k,v),h| 
-        h[v[0]] << [v[1], k]
+    class Tree
+
+      attr_reader :tree
+      def initialize(tree)
+        @tree = tree
       end
-    end
-    
-    def r_tree_hash(tree, p = nil, p_level = 0, p_index = 0, r_tree = {})
-      p ||= ->{ 
-        r_tree[tree.root] = 0
-        tree.root
-      }.call
 
-      child_level = p_level + 1
-      p.children.each_with_index do |child,i| 
-        r_tree[child] = [child_level, p_index] 
-        unless child.children.none?
-          r_tree_hash(tree, child, child_level, i, r_tree) 
+      def show
+        inverted_ordered_hash(r_tree_hash(tree))
+      end
+
+      def inverted_ordered_hash(h)
+        h.each_with_object(Hash.new {|h, k| h[k] = []}) do |(k,v),h| 
+          h[v[0]] << [v[1], k]
         end
       end
+      
+      def r_tree_hash(tree, p = nil, p_level = 0, p_index = 0, r_tree = {})
+        p ||= ->{ 
+          r_tree[tree.root] = 0
+          tree.root
+        }.call
 
-      r_tree
+        child_level = p_level + 1
+        p.children.each_with_index do |child,i| 
+          r_tree[child] = [child_level, p_index] 
+          unless child.children.none?
+            r_tree_hash(tree, child, child_level, i, r_tree) 
+          end
+        end
+
+        r_tree
+      end
     end
 end
 
