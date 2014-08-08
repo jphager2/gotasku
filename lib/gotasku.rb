@@ -15,6 +15,7 @@ require_relative 'gotasku/display'
 require_relative 'gotasku/parser'
 require_relative 'gotasku/user'
 require_relative 'gotasku/session'
+require_relative 'gotasku/tools'
 
 # only require Gotasku::Query if mongo db 'sgf' is found
 is_db = Mongo::MongoClient.new.database_names.include?(Gotasku::DB_NAME)

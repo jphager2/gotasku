@@ -7,6 +7,9 @@ class Gotasku::Problem
 
   # initializes with a hash of options
   def initialize(options = {})
+
+    options = Gotasku::Tools.stringify(options)
+
     @id   = options["id"]
     @sgf  = options["sgf"]
     @data = options["data"] 
