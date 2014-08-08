@@ -65,12 +65,13 @@ class Gotasku::Display
       end
 
       def show
-        inverted_ordered_hash(r_tree_hash)
+        inverted_ordered_hash
       end
 
-      def inverted_ordered_hash(h)
-        h.each_with_object(Hash.new {|h, k| h[k] = []}) do |(k,v),h| 
-          h[v[0]] << [v[1], k]
+      def inverted_ordered_hash
+        hash = Hash.new {|h, k| h[k] = []}
+        r_tree_hash.each_with_object(hash) do |(k,v),hash| 
+          hash[v[0]] << [v[1], k]
         end
       end
       
