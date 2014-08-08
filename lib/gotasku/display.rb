@@ -60,6 +60,7 @@ class Gotasku::Display
         @tree   = tree
         @parent = tree.root
         @r_tree = {}
+        @parent_index = 0
       end
 
       def show
@@ -72,13 +73,13 @@ class Gotasku::Display
         end
       end
       
-      def r_tree_hash(tree, p_level = 0, p_index = 0) 
+      def r_tree_hash(tree, p_level = 0) 
         child_level = p_level + 1
         @parent.children.each_with_index do |child,i| 
-          @r_tree[child] = [child_level, p_index] 
+          @r_tree[child] = [child_level, @parent_index] 
           unless child.children.none?
             @parent = child
-            r_tree_hash(tree, child_level, i) 
+            r_tree_hash(tree, child_level) 
           end
         end
 
