@@ -58,9 +58,10 @@ class Gotasku::Display
       attr_reader :tree
       def initialize(tree)
         @tree   = tree
-        @parent = tree.root
         @r_tree = {}
+        @parent = tree.root
         @parent_index = 0
+        @parent_level = 0
       end
 
       def show
@@ -73,13 +74,15 @@ class Gotasku::Display
         end
       end
       
-      def r_tree_hash(tree, p_level = 0) 
-        child_level = p_level + 1
-        @parent.children.each_with_index do |child,i| 
+      def r_tree_hash(tree) 
+        child_level = @parent_level + 1
+        @parent.children.each_with_index do |child,child_index| 
           @r_tree[child] = [child_level, @parent_index] 
           unless child.children.none?
-            @parent = child
-            r_tree_hash(tree, child_level) 
+            @parent       = child
+            @parent_index = child_index
+            @parent_level = child_level
+            r_tree_hash(tree) 
           end
         end
 
