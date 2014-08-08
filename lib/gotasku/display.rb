@@ -65,7 +65,7 @@ class Gotasku::Display
       end
 
       def show
-        inverted_ordered_hash(r_tree_hash(tree))
+        inverted_ordered_hash(r_tree_hash())
       end
 
       def inverted_ordered_hash(h)
@@ -74,7 +74,7 @@ class Gotasku::Display
         end
       end
       
-      def r_tree_hash(tree) 
+      def r_tree_hash() 
         child_level = @parent_level + 1
         @parent.children.each_with_index do |child,child_index| 
           @r_tree[child] = [child_level, @parent_index] 
@@ -82,7 +82,7 @@ class Gotasku::Display
             @parent       = child
             @parent_index = child_index
             @parent_level = child_level
-            r_tree_hash(tree) 
+            r_tree_hash() 
           end
         end
 
